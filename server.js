@@ -20,10 +20,14 @@ const pool = mysql.createPool({
 }).promise();
 
 
-app.get("/test", async (req, res) => {
-    const rows = await pool.query("select * from test;");
+app.get("/user", async (req, res) => {
+
+    const email = req.query.email;
+    const rows = await pool.query(`select mdp, salt from utilisateur where email = ?;`, [email]);
     res.status(201).send(rows[0]);
+
 });
+
 
 
 
