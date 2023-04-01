@@ -15,10 +15,10 @@ router.post('/login', async ( req, res ) => {
         const hashedBuffer = scryptSync( password, user.salt, 64 );
         const keyBuffer = Buffer.from( user.mdp, "hex" );
 
-        if( timingSafeEqual( hashedBuffer, keyBuffer ) ) res.status(200).send("Succesfully connected");
-        else res.status(401).send("Wrong password");
+        if( timingSafeEqual( hashedBuffer, keyBuffer ) ) res.status(200).send({message:"Succesfully connected"});
+        else res.status(401).send({message:"Wrong password"});
         
-    }else res.status(401).send("Wrong email");
+    }else res.status(401).send({message:"Wrong email"});
 
 });
 
@@ -30,8 +30,8 @@ router.post("/signup", async ( req, res ) => {
     const NumberSameUsername = (await pool.query(`select count(id) as number from utilisateur where username = ?;`, [username]))[0][0].number;
     const NumberSameEmail = (await pool.query(`select count(id) as number from utilisateur where email = ?;`, [email]))[0][0].number;
 
-    if( NumberSameUsername ) res.status(409).send("User name is already in use");
-    else if( NumberSameEmail ) res.status(409).send("Email Adress is already in use");
+    if( NumberSameUsername ) res.status(409).send({message:"User name is already in use"});
+    else if( NumberSameEmail ) res.status(409).send({message:"Email Adress is already in use"});
     else {
         const salt = randomBytes(16).toString("hex");
         const hashedPassword = scryptSync( password, salt, 64 ).toString("hex");
