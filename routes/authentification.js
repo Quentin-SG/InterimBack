@@ -15,7 +15,7 @@ router.post('/login', async ( req, res ) => {
         const hashedBuffer = scryptSync( password, user.salt, 64 );
         const keyBuffer = Buffer.from( user.mdp, "hex" );
 
-        if( timingSafeEqual( hashedBuffer, keyBuffer ) ) res.status(200).send({message:"Succesfully connected"});
+        if( timingSafeEqual( hashedBuffer, keyBuffer ) ) res.status(200).send({message:"Succesfully connected", id:user.id});
         else res.status(401).send({message:"Wrong password"});
         
     }else res.status(401).send({message:"Wrong email"});
