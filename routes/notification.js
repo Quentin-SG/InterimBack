@@ -9,7 +9,7 @@ router.post( "/create", async (req, res) => {
     const id_user = req.body.id_user;
     const dataJSON = req.body.data;
     if( (await pool.query(`insert into notification values (?,?,?);`, [ id, id_user, dataJSON ]))[0].affectedRows ){
-        res.status(201).send({message:"Successfully created", id});
+        res.status(201).send([{message:"Successfully created", id}]);
     }
 });
 
