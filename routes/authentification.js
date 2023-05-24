@@ -44,4 +44,25 @@ router.post("/signup", async ( req, res ) => {
     
 });
 
+router.post("/signup-jobseeker", async ( req, res ) => {
+    const userId = req.body.id;
+    const firstname = req.body.firstname;
+    const lastname = req.body.lastname;
+    const birthday = req.body.birthday;
+    const city = req.body.city;
+    const nationality  = req.body.nationality;
+
+    const user = (await pool.query(`select id from utilisateur where id = ?;`, [userId]))[0][0];
+
+    if( user ){
+        if( (await pool.query(`insert into demandeurEmploi values (?,?,?,?,?,?);`, [ userId, firstname, lastname, birthday, city, nationality]))[0].affectedRows ){
+            await pool.query(`update utilisateur set userRole = 1 where id = ?;`, [ userId ]);
+            res.status(201).send({message:"Successfully registered", userId});
+        }
+    }
+    
+});
+
+
+
 export default router;
