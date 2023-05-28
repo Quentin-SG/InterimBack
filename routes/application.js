@@ -39,5 +39,10 @@ router.get( "/", async (req, res) => {
     else res.status(204).send();
 });
 
+router.get( "/getAll", async (req, res) => {
+    const applications = (await pool.query(`select * from candidature where id_DemandeurEmploi = ?;`, [req.query.id]))[0];
+    if( applications ) res.status(200).send( applications );
+    else res.status(204).send();
+});
 
 export default router;
