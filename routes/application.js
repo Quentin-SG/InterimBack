@@ -22,8 +22,6 @@ router.post( "/create", async (req, res) => {
             const id_DemandeurEmploi = detailedUser.id_utilisateur;
             const id_offre = req.body.id_offre;
     
-            console.log(user)
-    
             if( (await pool.query(`insert into candidature values (?,?,?,?,?,?,?,?,?,?);`, [ id, nom, prenom, dateNaiss, nationnalite, cv, statut, lettre, id_DemandeurEmploi, id_offre ]))[0].affectedRows ){
                 res.status(201).send([{message:"Successfully created", id}]);
             }
@@ -41,6 +39,12 @@ router.get( "/", async (req, res) => {
 
 router.get( "/getAll", async (req, res) => {
     const applications = (await pool.query(`select * from candidature where id_DemandeurEmploi = ?;`, [req.query.id]))[0];
+    if( applications ) res.status(200).send( applications );
+    else res.status(204).send();
+});
+
+router.get( "/search", async (req, res) => {
+    const applications = (await pool.query(`select * from candidature as C, offre as O where id_DemandeurEmploi = ? and C.id_offre = O.id and O.nom like ?;`, [req.query.id, '%' + req.query.name + '%']))[0];
     if( applications ) res.status(200).send( applications );
     else res.status(204).send();
 });
