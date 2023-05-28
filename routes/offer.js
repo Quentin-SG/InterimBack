@@ -27,7 +27,7 @@ router.post( "/create", async (req, res) => {
 });
 
 router.get( "/search", async (req, res) => {
-    const offers = (await pool.query(`select id, nom, id_utilisateurPayant, views from offre where nom like ?;`, ['%' + req.query.name + '%']))[0];
+    const offers = (await pool.query(`select * from offre as O, offreEmployeur as E where O.id = E.id_offre and E.metier like ?;`, ['%' + req.query.name + '%']))[0];
     if( offers ) res.status(200).send( offers );
     else res.status(204).send();
 });
