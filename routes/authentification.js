@@ -53,10 +53,7 @@ router.post("/signup-jobseeker", async ( req, res ) => {
     const nationality  = req.body.nationality;
 
     const user = (await pool.query(`select id from utilisateur where id = ?;`, [userId]))[0][0];
-    const subuser = (await pool.query(`select id_utilisateur from utilisateurPayant where id_utilisateur = ?;`, [userId]))[0][0];
-
-    if( subuser ) res.status(401).send([{message:"Bad user"}]);
-
+    console.log(userId, req.body.id);
     if( user ){
         if( (await pool.query(`insert into demandeurEmploi values (?,?,?,?,?,?);`, [ userId, firstname, lastname, birthday, city, nationality]))[0].affectedRows ){
             await pool.query(`update utilisateur set userRole = 1 where id = ?;`, [ userId ]);
@@ -80,6 +77,7 @@ router.post("/signup-sub", async ( req, res ) => {
 
     const user = (await pool.query(`select id from utilisateur where id = ?;`, [userId]))[0][0];
     const subuser = (await pool.query(`select id_utilisateur from utilisateurPayant where id_utilisateur = ?;`, [userId]))[0][0];
+    console.log(user, subuser);
 
     if( subuser ) res.status(401).send([{message:"Bad user"}]);
 
