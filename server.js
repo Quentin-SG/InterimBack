@@ -5,7 +5,7 @@ import authentificationRoutes from "./routes/authentification.js";
 import notificationRoutes from "./routes/notification.js";
 import userRoutes from "./routes/user.js";
 import offerRoutes from "./routes/offer.js";
-import applicationRoutes from "./routes/offer.js";
+import applicationRoutes from "./routes/application.js";
 
 const app = express();
 const PORT = 5000;
