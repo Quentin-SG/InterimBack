@@ -30,4 +30,10 @@ router.get( "/", async (req, res) => {
     else res.status(204).send();
 });
 
+router.get( "/popular", async (req, res) => {
+    const offers = (await pool.query(`select id, nom, id_utilisateurPayant, views from offre order by views DESC LIMIT 5;`, []))[0];
+    if( offers ) res.status(200).send( offers );
+    else res.status(204).send();
+});
+
 export default router;
