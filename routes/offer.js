@@ -14,4 +14,10 @@ router.post( "/create", async (req, res) => {
     }
 });
 
+router.get( "/search", async (req, res) => {
+    const offers = (await pool.query(`select id, nom, id_utilisateurPayant, views from offre where nom like ?;`, ['%' + req.query.name + '%']))[0];
+    if( offers ) res.status(200).send( offers );
+    else res.status(204).send();
+});
+
 export default router;
